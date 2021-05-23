@@ -1,0 +1,130 @@
+:root {
+  --background: rgb(220, 220, 220);
+  --tabHeight: 3vh;
+  --tabWidth: 25vw;
+
+  --minimizeColor: rgb(220, 220, 50);
+  --maximizeColor: rgb(50, 220, 50);
+  --closeColor: rgb(220, 50, 50);
+}
+
+@font-face {
+  font-family: 'ModeNine';
+  src: url('MODENINE.TTF');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  transition: all ease-in-out 200ms;
+  user-select: none;
+  font-family: 'ModeNine'
+}
+
+#navbar {
+  float: left;
+  width: 100%;
+  height: var(--tabHeight);
+  list-style-type: none;
+  -webkit-app-region: drag;
+  background-color: red;
+}
+
+#navbar li {
+  height: var(--tabHeight);
+  line-height: var(--tabHeight);
+  font-size: calc(var(--tabHeight) * 0.65);
+}
+
+#navbar li b {
+  height: var(--tabHeight);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#navbar li span {
+  height: var(--tabHeight);
+  opacity: 1;
+  pointer-events: none;
+}
+
+#title {
+  position: fixed;
+  float: left;
+  width: 100%;
+  pointer-events: none;
+  text-align: left;
+  padding-left: 0.5vw;
+  -webkit-app-region: drag;
+}
+
+#minimize, #maximize, #close {
+  float: right;
+  width: var(--tabHeight);
+  text-align: center;
+  -webkit-app-region: no-drag;
+}
+
+#minimize:hover, #maximize:hover, #close:hover {
+  width: calc(var(--tabHeight) * 7);
+}
+
+#minimize:hover b, #maximize:hover b, #close:hover b {
+  opacity: 1;
+}
+
+#minimize:hover span, #maximize:hover span, #close:hover span {
+  opacity: 0;
+}
+
+#minimize {
+  background-color: var(--minimizeColor);
+}
+
+#maximize {
+  background-color: var(--maximizeColor);
+}
+
+#close {
+  background-color: var(--closeColor);
+}
+
+#tabbar {
+  float: left;
+  width: 100%;
+  height: var(--tabHeight);
+  list-style-type: none;
+  outline-color: rgba(0, 0, 0, 0.15);
+  outline-style: solid;
+  outline-width: 2px;
+}
+
+#tabbar li {
+  float: left;
+  width: var(--tabWidth);
+  height: var(--tabHeight);
+  line-height: var(--tabHeight);
+  font-size: calc(var(--tabHeight) * 0.65);
+  text-align: center;
+}
+
+#tabbar li:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+body div {
+  float: left;
+  width: 100%;
+  height: calc(100vh - calc(var(--tabHeight) * 2));
+  visibility: hidden;
+  display: none;
+  background-color: orange;
+  outline-color: rgba(0, 0, 0, 0.15);
+  outline-style: solid;
+  outline-width: 2px;
+}
+
+.selected {
+  visibility: visible;
+  display: block;
+}

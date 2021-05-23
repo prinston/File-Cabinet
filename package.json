@@ -1,0 +1,17 @@
+{
+  "name": "FileCabinet",
+  "version": "1.0.0",
+  "description": "Automatically moves and sorts files to designated file locations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "Tyler Ray",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "electron": "^12.0.8",
+    "jquery": "^3.6.0"
+  }
+}
