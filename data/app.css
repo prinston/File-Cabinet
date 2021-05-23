@@ -6,6 +6,8 @@
   --minimizeColor: rgb(220, 220, 50);
   --maximizeColor: rgb(50, 220, 50);
   --closeColor: rgb(220, 50, 50);
+
+  --selected: rgb(220, 220, 220);
 }
 
 @font-face {
@@ -21,13 +23,16 @@
   font-family: 'ModeNine'
 }
 
+html {
+  overflow: hidden;
+}
+
 #navbar {
   float: left;
   width: 100%;
   height: var(--tabHeight);
   list-style-type: none;
   -webkit-app-region: drag;
-  background-color: red;
 }
 
 #navbar li {
@@ -40,12 +45,14 @@
   height: var(--tabHeight);
   opacity: 0;
   pointer-events: none;
+  text-align: center;
 }
 
 #navbar li span {
   height: var(--tabHeight);
   opacity: 1;
   pointer-events: none;
+  text-align: center;
 }
 
 #title {
@@ -63,6 +70,20 @@
   width: var(--tabHeight);
   text-align: center;
   -webkit-app-region: no-drag;
+  overflow: hidden;
+}
+
+#minimize span, #maximize span, #close span {
+  float: right;
+  height: var(--tabHeight);
+  width: var(--tabHeight);
+}
+
+#minimize b, #maximize b, #close b {
+  float: right;
+  height: var(--tabHeight);
+  width: calc(var(--tabHeight) * 7);
+  display: none;
 }
 
 #minimize:hover, #maximize:hover, #close:hover {
@@ -71,13 +92,17 @@
 
 #minimize:hover b, #maximize:hover b, #close:hover b {
   opacity: 1;
+  display: block;
 }
 
 #minimize:hover span, #maximize:hover span, #close:hover span {
   opacity: 0;
+  display: none;
 }
 
 #minimize {
+  border-top-left-radius: calc(var(--tabHeight) * 0.5);
+  border-bottom-left-radius: calc(var(--tabHeight) * 0.5);
   background-color: var(--minimizeColor);
 }
 
@@ -108,7 +133,7 @@
   text-align: center;
 }
 
-#tabbar li:hover {
+#tabbar li:not(.selected):hover {
   background-color: rgba(0, 0, 0, 0.25);
 }
 
@@ -118,13 +143,18 @@ body div {
   height: calc(100vh - calc(var(--tabHeight) * 2));
   visibility: hidden;
   display: none;
-  background-color: orange;
-  outline-color: rgba(0, 0, 0, 0.15);
-  outline-style: solid;
-  outline-width: 2px;
 }
 
 .selected {
-  visibility: visible;
+  background-color: red;
+}
+
+.show {
   display: block;
+  visibility: visible;
+}
+
+.hide {
+  display: none;
+  visibility: hidden;
 }

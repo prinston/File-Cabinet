@@ -37,6 +37,22 @@ const setVariable = (variable, value) => {
   $('body').css('--' + variable, value);
 }
 
+/*  */
+const openTab = (tab) => {
+  $('[type=group]').each((index) => {
+    $($('[type=group]').get(index)).attr('class', 'hide');
+  });
+  $('#' + tab + '_tab').attr('class', 'show');
+}
+
+/*  */
+const setActive = (tab) => {
+  $('[type=tab]').each((index) => {
+    $($('[type=tab]').get(index)).attr('class', '');
+  });
+  $('[tab=' + tab + ']').attr('class', 'selected');
+}
+
 /* Gets the page properly setup for runtime */
 const setupDocument = () => {
   window.getCurrentWindow = getCurrentWindow;
@@ -47,6 +63,21 @@ const setupDocument = () => {
   window.close = close;
   window.isMaximized = isMaximized;
   setVariable('tabWidth', (100/$('#tabbar').children().length) + 'vw');
+
+  setInterval(async () => {
+    if(window.isMaximized()) {
+      $('#maximize span').empty().append('&#9632;');
+      $('#maximize').attr('onclick', 'unmaximize()');
+    } else {
+      $('#maximize span').empty().append('&#9633;');
+      $('#maximize').attr('onclick', 'maximize()');
+    }
+  }, 1);
+
+  $('[type=tab]').each((index) => {
+    var tab = $($('[type=tab]').get(index));
+    tab.attr('onclick', 'openTab(\'' + tab.attr('tab') + '\'); setActive(\'' + tab.attr('tab') + '\');');
+  });
 }
 
 /* Waits for the page to load to begin modification */
