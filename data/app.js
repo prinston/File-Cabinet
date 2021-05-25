@@ -12,7 +12,7 @@ const path = require('path');
 const vm = require('vm');
 const { remote, ipcRenderer } = require('electron');
 const { getCurrentWindow, minimize, maximize, unmaximize, toggleMaximize, close, isMaximized } = require('./appmanip');
-const { c_configpath, c_defconfig } = require('./constants');
+const { c_configpath, c_defconfig, c_themepath, c_defthemes } = require('./constants');
 
 /* Loads the config */
 var config;
@@ -30,6 +30,22 @@ if(fs.existsSync(c_configpath)) {
 } else {
   config = c_defconfig;
   fs.writeFileSync(c_configpath, JSON.stringify(config, null, 2));
+}
+
+/* Loads the themes folder */
+var themes;
+if(fs.existsSync(c_themepath)) {
+  fs.readdir(c_themepath, (err, files) => {
+    for(var x in files) {
+      console.log(files[x]);
+    }
+  });
+} else {
+  fs.mkdir(c_themepath, (err) => {
+    if(err) throw err;
+    fs.writeFile(path.normalize(c_themepath + '\\light.json'), JSON.stringify(c_defthemes['light'], null, 2), (err) => { if(err) throw err; });
+    fs.writeFile(path.normalize(c_themepath + '\\dark.json'), JSON.stringify(c_defthemes['dark'], null, 2), (err) => { if(err) throw err; });
+  });
 }
 
 /* Set a CSS variable */

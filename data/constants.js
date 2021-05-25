@@ -13,4 +13,22 @@ const c_defconfig = {
   }
 }
 
-module.exports = { c_configpath, c_defconfig }
+const c_themepath = path.normalize(__dirname + '\\..\\themes');
+const c_defthemes = {
+  light: {
+    text: [0, 0, 0],
+    background: [220, 220, 220],
+    minimizeColor: [220, 220, 50],
+    maximizeColor: [50, 220, 50],
+    closeColor: [220, 50, 50],
+    controlText: [0, 0, 0],
+    tabBackground: [210, 210, 210],
+    tabSelected: [190, 190, 190],
+    tabHover: [200, 200, 200]
+  },
+  dark: {
+
+  }
+}
+
+module.exports = { c_configpath, c_defconfig, c_themepath, c_defthemes };

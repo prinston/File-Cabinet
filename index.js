@@ -7,7 +7,10 @@ const create = () => {
   const frame = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth: 200,
+    minHeight: 150,
     frame: false,
+    transparent: true,
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,

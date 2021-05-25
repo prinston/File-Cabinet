@@ -1,13 +1,18 @@
 :root {
+  --text: rgb(0, 0, 0);
   --background: rgb(220, 220, 220);
+
   --tabHeight: 3vh;
   --tabWidth: 25vw;
 
   --minimizeColor: rgb(220, 220, 50);
   --maximizeColor: rgb(50, 220, 50);
   --closeColor: rgb(220, 50, 50);
+  --controlText: rgb(0, 0, 0);
 
-  --selected: rgb(220, 220, 220);
+  --tabBackground: rgb(220, 220, 220);
+  --tabSelected: rgb(190, 190, 190);
+  --tabHover: rgb(210, 210, 210);
 }
 
 @font-face {
@@ -20,11 +25,14 @@
   padding: 0;
   transition: all ease-in-out 200ms;
   user-select: none;
-  font-family: 'ModeNine'
+  font-family: 'arial';
+  color: var(--text);
 }
 
 html {
+  background-color: var(--background);
   overflow: hidden;
+  border-radius: 10%;
 }
 
 #navbar {
@@ -71,12 +79,14 @@ html {
   text-align: center;
   -webkit-app-region: no-drag;
   overflow: hidden;
+  color: var(--controlText);
 }
 
 #minimize span, #maximize span, #close span {
   float: right;
   height: var(--tabHeight);
   width: var(--tabHeight);
+  color: var(--controlText);
 }
 
 #minimize b, #maximize b, #close b {
@@ -84,6 +94,7 @@ html {
   height: var(--tabHeight);
   width: calc(var(--tabHeight) * 7);
   display: none;
+  color: var(--controlText);
 }
 
 #minimize:hover, #maximize:hover, #close:hover {
@@ -130,11 +141,16 @@ html {
   height: var(--tabHeight);
   line-height: var(--tabHeight);
   font-size: calc(var(--tabHeight) * 0.65);
+  background-color: var(--tabBackground);
   text-align: center;
 }
 
 #tabbar li:not(.selected):hover {
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: var(--tabHover);
+}
+
+#tabbar li.selected {
+  background-color: var(--tabSelected);
 }
 
 body div {
@@ -143,10 +159,6 @@ body div {
   height: calc(100vh - calc(var(--tabHeight) * 2));
   visibility: hidden;
   display: none;
-}
-
-.selected {
-  background-color: red;
 }
 
 .show {
