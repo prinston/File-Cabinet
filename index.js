@@ -10,7 +10,6 @@ const create = () => {
     minWidth: 200,
     minHeight: 150,
     frame: false,
-    transparent: true,
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,

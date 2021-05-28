@@ -9,7 +9,25 @@
 const c_configpath = path.normalize(__dirname + '\\..\\config.json');
 const c_defconfig = {
   settings: {
-    theme: 'light'
+    theme: 'light',
+    autoSort: 5,
+    organizeType: 'year'
+  },
+  files: {
+    search: [
+      'C:\\Users\\Tyler\\Desktop',
+      'C:\\Users\\Tyler\\Downloads'
+    ],
+    move: {
+      png: {
+        to: 'C:\\Users\\Tyler\\Pictures',
+        sizeMax: 0,
+        sizeMin: 0,
+        created: 0,
+        modified: 0,
+        organize: 'date'
+      }
+    }
   }
 }
 
