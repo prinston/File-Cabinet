@@ -24,7 +24,7 @@ const create = () => {
   frame.loadFile('./data/app.html');
   var notif = new Notification({
     title: 'Testing Notification',
-    body: 'Testing the body of this big tittied notification',
+    body: 'Testing the body of this notification',
     silent: true,
     hasReply: false,
     timeoutType: 'default'
