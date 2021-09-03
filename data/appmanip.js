@@ -6,6 +6,7 @@
 *****************************************************/
 
 const remote = require('@electron/remote');
+const $ = require('jquery');
 
 const getCurrentWindow = () => { return remote.getCurrentWindow(); }
 

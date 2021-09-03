@@ -12,39 +12,40 @@ const path = require('path');
 const vm = require('vm');
 const { remote, ipcRenderer } = require('electron');
 const { getCurrentWindow, minimize, maximize, unmaximize, toggleMaximize, close, isMaximized } = require('./appmanip');
-const { c_configpath, c_defconfig, c_themepath, c_defthemes } = require('./constants');
+const { CONFIG_PATH, DEFAULT_CONFIG, THEME_PATH, DEFAULT_THEMES } = require('./constants');
 
 /* Loads the config */
 var config;
-if(fs.existsSync(c_configpath)) {
-  fs.readFile(c_configpath, (err, data) => {
+if(fs.existsSync(CONFIG_PATH)) {
+  fs.readFile(CONFIG_PATH, (err, data) => {
     if(err) throw err;
     config = JSON.parse(data.toString());
-    for(var x in c_defconfig) {
+    for(var x in DEFAULT_CONFIG) {
       if(config[x] == undefined) {
-        config[x] = c_defconfig;
+        config[x] = DEFAULT_CONFIG;
       }
     }
-    fs.writeFileSync(c_configpath, JSON.stringify(config, null, 2));
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
   });
 } else {
-  config = c_defconfig;
-  fs.writeFileSync(c_configpath, JSON.stringify(config, null, 2));
+  config = DEFAULT_CONFIG;
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
 }
 
 /* Loads the themes folder */
 var themes;
-if(fs.existsSync(c_themepath)) {
-  fs.readdir(c_themepath, (err, files) => {
+if(fs.existsSync(THEME_PATH)) {
+  fs.readdir(THEME_PATH, (err, files) => {
     for(var x in files) {
       console.log(files[x]);
     }
   });
 } else {
-  fs.mkdir(c_themepath, (err) => {
+  fs.mkdir(THEME_PATH, (err) => {
     if(err) throw err;
-    fs.writeFile(path.normalize(c_themepath + '\\light.json'), JSON.stringify(c_defthemes['light'], null, 2), (err) => { if(err) throw err; });
-    fs.writeFile(path.normalize(c_themepath + '\\dark.json'), JSON.stringify(c_defthemes['dark'], null, 2), (err) => { if(err) throw err; });
+    for(let t in DEFAULT_THEMES) {
+      fs.writeFile(path.normalize(THEME_PATH + '\\' + t + '.json'), JSON.stringify(DEFAULT_THEMES[t], null, 2), (err) => { if(err) throw err; });
+    }
   });
 }
 
@@ -69,7 +70,7 @@ const setActive = (tab) => {
   $('[tab=' + tab + ']').attr('class', 'selected');
 }
 
-/* Gets the page properly setup for runtime */
+/* Gets the page properly setup for runtime (for custom title bar) */
 const setupDocument = () => {
   window.getCurrentWindow = getCurrentWindow;
   window.minimize = minimize;
@@ -80,15 +81,21 @@ const setupDocument = () => {
   window.isMaximized = isMaximized;
   setVariable('tabWidth', (100/$('#tabbar').children().length) + 'vw');
 
-  setInterval(async () => {
+  $('#maximize').on('click', () => {
     if(window.isMaximized()) {
-      $('#maximize span').empty().append('&#9632;');
-      $('#maximize').attr('onclick', 'unmaximize()');
-    } else {
+      $('#maximize img').attr('src', 'maximize.png');
       $('#maximize span').empty().append('&#9633;');
-      $('#maximize').attr('onclick', 'maximize()');
+      $('#maximize b').text('Maximize');
+      window.unmaximize();
+      return;
+    } else {
+      $('#maximize img').attr('src', 'unmaximize.png');
+      $('#maximize span').empty().append('&#9632;');
+      $('#maximize b').text('Unmaximize');
+      window.maximize();
+      return;
     }
-  }, 1);
+  })
 
   $('[type=tab]').each((index) => {
     var tab = $($('[type=tab]').get(index));

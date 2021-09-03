@@ -6,33 +6,39 @@
 ***************************************************/
 
 /* Constant declarations */
-const c_configpath = path.normalize(__dirname + '\\..\\config.json');
-const c_defconfig = {
+const CONFIG_PATH = path.normalize(__dirname + '\\..\\config.json');
+const DEFAULT_CONFIG = {
   settings: {
-    theme: 'light',
-    autoSort: 5,
-    organizeType: 'year'
+    theme: "light",
+    autoSort: 5
   },
   files: {
     search: [
-      'C:\\Users\\Tyler\\Desktop',
-      'C:\\Users\\Tyler\\Downloads'
+      "C:\\Users\\Tyler\\Desktop",
+      "C:\\Users\\Tyler\\Downloads"
     ],
-    move: {
-      png: {
-        to: 'C:\\Users\\Tyler\\Pictures',
-        sizeMax: 0,
-        sizeMin: 0,
-        created: 0,
-        modified: 0,
-        organize: 'date'
+    move: [
+      {
+        name: "Images",
+        types: [
+          "png",
+          "jpg",
+          "jpeg",
+          "gif",
+          "img"
+        ],
+        to: "C:\\Users\\Tyler\\Pictures",
+        sizeMax: -1,
+        sizeMin: -1,
+        created: -1,
+        modified: -1,
       }
-    }
+    ]
   }
 }
 
-const c_themepath = path.normalize(__dirname + '\\..\\themes');
-const c_defthemes = {
+const THEME_PATH = path.normalize(__dirname + '\\..\\themes');
+const DEFAULT_THEMES = {
   light: {
     text: [0, 0, 0],
     background: [220, 220, 220],
@@ -49,4 +55,4 @@ const c_defthemes = {
   }
 }
 
-module.exports = { c_configpath, c_defconfig, c_themepath, c_defthemes };
+module.exports = { CONFIG_PATH, DEFAULT_CONFIG, THEME_PATH, DEFAULT_THEMES };
