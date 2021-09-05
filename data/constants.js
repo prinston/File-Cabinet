@@ -10,30 +10,12 @@ const CONFIG_PATH = path.normalize(__dirname + '\\..\\config.json');
 const DEFAULT_CONFIG = {
   settings: {
     theme: "light",
+    doAutoSort: false,
     autoSort: 5
   },
   files: {
-    search: [
-      "C:\\Users\\Tyler\\Desktop",
-      "C:\\Users\\Tyler\\Downloads"
-    ],
-    move: [
-      {
-        name: "Images",
-        types: [
-          "png",
-          "jpg",
-          "jpeg",
-          "gif",
-          "img"
-        ],
-        to: "C:\\Users\\Tyler\\Pictures",
-        sizeMax: -1,
-        sizeMin: -1,
-        created: -1,
-        modified: -1,
-      }
-    ]
+    search: [],
+    move: []
   }
 }
 

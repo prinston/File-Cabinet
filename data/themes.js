@@ -3,7 +3,7 @@
 * Tyler Ray                                  *
 * 9/4/21                                     *
 * USE: Handles theme changes and other stuff *
-**********************************************/
+*********************************************/
 
 const INTERPOLATION_AMOUNT = 10;
 

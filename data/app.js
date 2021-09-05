@@ -3,14 +3,16 @@
 * Tyler Ray                                   *
 * 5/21/21                                     *
 * USE: Base script to setup and start program *
-***********************************************/
+**********************************************/
 
 /* Define dependencies */
 const fs = require('fs');
 const $ = require('jquery');
 const path = require('path');
 const vm = require('vm');
+const os = require('os');
 const { remote, ipcRenderer } = require('electron');
+const dialog = remote.dialog;
 const { getCurrentWindow, minimize, maximize, unmaximize, toggleMaximize, close, isMaximized } = require('./appmanip');
 const { CONFIG_PATH, DEFAULT_CONFIG, THEME_PATH, DEFAULT_THEMES } = require('./constants');
 
@@ -22,6 +24,19 @@ function loadScript(relativePath)
 
 loadScript('event.js');
 loadScript('themes.js');
+loadScript('files.js');
+loadScript('search.js');
+loadScript('filters.js');
+
+/* Generates a UUID for a filter */
+function generateId()
+{
+  let res = '';
+  for(let x = 0; x < 30; x++) {
+    res += parseInt((Math.random() * 11) - 1);
+  }
+  return res;
+}
 
 /* Saves the config */
 function saveConfig()
@@ -108,6 +123,13 @@ function setActive(tab)
 /* Gets the page properly setup for runtime (for custom title bar) */
 function setupDocument()
 {
+  for(let x in config.files.search) {
+    createSearchDiv(x);
+  }
+  for(let x in config.files.move)
+  {
+    createFilterDiv(x);
+  }
   window.getCurrentWindow = getCurrentWindow;
   window.minimize = minimize;
   window.maximize = maximize;

@@ -14,11 +14,31 @@
   --tabBackground: rgb(220, 220, 220);
   --tabSelected: rgb(190, 190, 190);
   --tabHover: rgb(210, 210, 210);
+
+  --shadow: rgba(0, 0, 0, 0.25);
+  --highlight: rgba(255, 255, 255, 0.25);
+  --hoverHighlight: rgba(255, 255, 255, 0.10);
 }
 
 @font-face {
   font-family: 'ModeNine';
   src: url('MODENINE.TTF');
+}
+
+::-webkit-scrollbar {
+  width: var(--tabHeight);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--tabBackground);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--shadow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+
 }
 
 * {
@@ -143,14 +163,6 @@ body {
   background-color: var(--tabSelected);
 }
 
-body div {
-  float: left;
-  width: 100%;
-  height: calc(100vh - calc(var(--tabHeight) + var(--navHeight)));
-  visibility: hidden;
-  display: none;
-}
-
 .show {
   display: block;
   visibility: visible;
@@ -159,4 +171,107 @@ body div {
 .hide {
   display: none;
   visibility: hidden;
+}
+
+body div {
+  float: left;
+  width: 100%;
+  height: calc(100vh - calc(var(--tabHeight) + var(--navHeight)));
+  display: none;
+  overflow-y: scroll;
+}
+
+body div div {
+  display: block;
+  top: 50px;
+  width: 100%;
+  height: auto;
+  overflow-y: auto;
+}
+
+body div div div {
+  background-color: var(--shadow);
+  height: 50px;
+}
+
+body div div div text {
+  margin-left: 10px;
+  line-height: 50px;
+  float: left;
+  font-size: 20px;
+  font-weight: bolder
+}
+
+body div div div input {
+  margin-top: 6px;
+  margin-right: 7px;
+  float: right;
+  font-size: 20px;
+  padding: 5px;
+}
+
+input {
+  display: block;
+  background-color: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--text);
+  color: var(--text);
+  padding: 5px;
+}
+
+input:hover {
+  background-color: var(--hoverHighlight);
+}
+
+input:focus {
+  outline: none;
+}
+
+input:active {
+  outline: none;
+  background-color: var(--highlight)
+}
+
+#filters .filter, #search .search {
+  height: auto;
+  background-color: transparent;
+}
+
+#filters .filter div {
+  height: auto;
+}
+
+#filters .filter div text {
+  margin-left: 50px;
+}
+
+#filters .filter div ul {
+  margin-left: 20px;
+  margin-top: 10px;
+  float: left;
+  height: auto;
+  list-style-type: none;
+}
+
+#filters .filter div ul li {
+  font-size: 20px;
+  line-height: 40px;
+}
+
+.remove {
+  margin-left: 10px;
+  display: block;
+  margin-top: 10px;
+  background-color: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--closeColor);
+  color: var(--closeColor);
+  padding: 5px;
+  font-size: 10px;
+}
+
+#filter .filter:hover, #search .search:hover {
+  background-color: var(--hoverHighlight);
 }

@@ -3,7 +3,7 @@
 * Tyler Ray                                         *
 * 5/23/21                                           *
 * USE: Script to help with managing the application *
-*****************************************************/
+****************************************************/
 
 const remote = require('@electron/remote');
 const $ = require('jquery');

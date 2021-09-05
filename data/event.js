@@ -16,7 +16,7 @@ function emit(eventName)
     for(let x = 1; x < arguments.length; x++)
     {
       if(vars != '') vars += ', ';
-      vars += arguments[x];
+      vars += '\'' + arguments[x] + '\'';
     }
     for(let x in eventHandlers[eventName])
     {

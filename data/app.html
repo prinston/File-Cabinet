@@ -17,6 +17,18 @@
       <li type='tab' tab='settings'>Settings</li>
     </ul>
     <div type='group' id='files_tab' class='show'>
+      <div id='search'>
+        <div id='createSearch' class='seperator'>
+          <text>Directories</text>
+          <input type='button' value='+ Add Search Folder' onclick='requestFileSearchDialog()'></input>
+        </div>
+      </div>
+      <div id='filters'>
+        <div id='createSort' class='seperator'>
+          <text>Filters</text>
+          <input type='button' value='+ Create Filter' onclick='createFilter()'></input>
+        </div>
+      </div>
     </div>
     <div type='group' id='log_tab' class='hide'>
     </div>
