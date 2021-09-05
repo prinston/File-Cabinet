@@ -14,6 +14,10 @@ const { remote, ipcRenderer } = require('electron');
 const { getCurrentWindow, minimize, maximize, unmaximize, toggleMaximize, close, isMaximized } = require('./appmanip');
 const { CONFIG_PATH, DEFAULT_CONFIG, THEME_PATH, DEFAULT_THEMES } = require('./constants');
 
+/* Load scripts in the current VM */
+vm.runInThisContext(fs.readFileSync(path.normalize(__dirname + '//event.js')).toString());
+emit('eventName', 'sup', 'my', 'bitch', 'lippa');
+
 /* Loads the config */
 var config;
 if(fs.existsSync(CONFIG_PATH)) {
@@ -50,20 +54,25 @@ if(fs.existsSync(THEME_PATH)) {
 }
 
 /* Set a CSS variable */
-const setVariable = (variable, value) => {
+function setVariable(variable, value) {
   $('body').css('--' + variable, value);
 }
 
-/*  */
-const openTab = (tab) => {
+/* Gets a CSS variable */
+function getVariable(variable) {
+  return $('body').css('--' + variable);
+}
+
+/* Set a tab as visible and other tabs invisible */
+function openTab(tab) {
   $('[type=group]').each((index) => {
     $($('[type=group]').get(index)).attr('class', 'hide');
   });
   $('#' + tab + '_tab').attr('class', 'show');
 }
 
-/*  */
-const setActive = (tab) => {
+/* Set this tab as active and other tabs as inactive */
+function setActive = (tab) => {
   $('[type=tab]').each((index) => {
     $($('[type=tab]').get(index)).attr('class', '');
   });
@@ -71,7 +80,7 @@ const setActive = (tab) => {
 }
 
 /* Gets the page properly setup for runtime (for custom title bar) */
-const setupDocument = () => {
+function setupDocument() {
   window.getCurrentWindow = getCurrentWindow;
   window.minimize = minimize;
   window.maximize = maximize;

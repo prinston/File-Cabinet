@@ -8,32 +8,32 @@
 const remote = require('@electron/remote');
 const $ = require('jquery');
 
-const getCurrentWindow = () => { return remote.getCurrentWindow(); }
+function getCurrentWindow() { return remote.getCurrentWindow(); }
 
-const minimize = (win = getCurrentWindow()) => {
+function minimize(win = getCurrentWindow()) {
   if(win != undefined && win.minimizable) win.minimize();
 }
 
-const maximize = (win = getCurrentWindow()) => {
+function maximize(win = getCurrentWindow()) {
   if(win != undefined && win.maximizable) win.maximize();
 }
 
-const unmaximize = (win = getCurrentWindow()) => {
+function unmaximize(win = getCurrentWindow()) {
   if(win != undefined && win.maximizable) win.unmaximize();
 }
 
-const toggleMaximize = (win = getCurrentWindow()) => {
+function toggleMaximize(win = getCurrentWindow()) {
   if(win != undefined) {
     if(win.isMaximized()) unmaximize(win);
     else maximize(win);
   }
 }
 
-const close = (win = getCurrentWindow()) => {
+function close(win = getCurrentWindow()) {
   if(win != undefined) win.close();
 }
 
-const isMaximized = (win = getCurrentWindow()) => {
+function isMaximized(win = getCurrentWindow()) {
   return win != undefined ? win.isMaximized() : false;
 }
 
