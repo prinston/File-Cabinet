@@ -70,10 +70,7 @@ else
     if(err) throw err;
     for(let t in DEFAULT_THEMES)
     {
-      fs.writeFile(path.normalize(THEME_PATH + '\\' + t + '.json'), JSON.stringify(DEFAULT_THEMES[t], null, 2), function(err)
-      {
-        if(err) throw err;
-      });
+      fs.writeFileSync(path.normalize(THEME_PATH + '\\' + t + '.json'), JSON.stringify(DEFAULT_THEMES[t], null, 2));
     }
   });
 }
