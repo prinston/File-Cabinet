@@ -17,7 +17,7 @@ const { CONFIG_PATH, DEFAULT_CONFIG, THEME_PATH, DEFAULT_THEMES } = require('./c
 /* Load scripts in the current VM */
 function loadScript(relativePath)
 {
-  vm.runInThisContext(fs.readFileSync(path.normalize(__dirname + relativePath)).toString());
+  vm.runInThisContext(fs.readFileSync(path.normalize(__dirname + '/' + relativePath)).toString());
 }
 
 loadScript('event.js');
@@ -33,19 +33,16 @@ function saveConfig()
 var config;
 if(fs.existsSync(CONFIG_PATH))
 {
-  fs.readFile(CONFIG_PATH, function(err, data)
+  let data = fs.readFileSync(CONFIG_PATH).toString();
+  config = JSON.parse(data);
+  for(var x in DEFAULT_CONFIG)
   {
-    if(err) throw err;
-    config = JSON.parse(data.toString());
-    for(var x in DEFAULT_CONFIG)
+    if(config[x] == undefined)
     {
-      if(config[x] == undefined)
-      {
-        config[x] = DEFAULT_CONFIG;
-      }
+      config[x] = DEFAULT_CONFIG;
     }
-    saveConfig();
-  });
+  }
+  saveConfig();
 }
 else
 {
@@ -54,16 +51,17 @@ else
 }
 
 /* Loads the themes folder */
-var themes;
+var themes = {};
 if(fs.existsSync(THEME_PATH))
 {
-  fs.readdir(THEME_PATH, function(err, files)
+  let files = fs.readdirSync(THEME_PATH);
+  for(let x in files)
   {
-    for(var x in files)
+    if(files[x].toLowerCase().endsWith('.json'))
     {
-      console.log(files[x]);
+      themes[files[x].toLowerCase().replace('.json', '')] = JSON.parse(fs.readFileSync(path.normalize(THEME_PATH + '/' + files[x])));
     }
-  });
+  }
 }
 else
 {
@@ -126,27 +124,39 @@ function setupDocument()
   {
     if(window.isMaximized())
     {
-      $('#maximize img').attr('src', 'maximize.png');
-      $('#maximize span').empty().append('&#9633;');
-      $('#maximize b').text('Maximize');
       window.unmaximize();
       return;
     }
     else
     {
-      $('#maximize img').attr('src', 'unmaximize.png');
-      $('#maximize span').empty().append('&#9632;');
-      $('#maximize b').text('Unmaximize');
       window.maximize();
       return;
     }
-  })
+  });
+
+  setInterval(function()
+  {
+    if(window.isMaximized())
+    {
+      $('#maximize img').attr('src', 'unmaximize.png');
+      $('#maximize span').empty().append('&#9632;');
+      $('#maximize b').text('Unmaximize');
+    }
+    else
+    {
+      $('#maximize img').attr('src', 'maximize.png');
+      $('#maximize span').empty().append('&#9633;');
+      $('#maximize b').text('Maximize');
+    }
+  }, 50);
 
   $('[type=tab]').each(function(index)
   {
     var tab = $($('[type=tab]').get(index));
     tab.attr('onclick', 'setActive(\'' + tab.attr('tab') + '\');');
   });
+
+  emit('document:ready');
 }
 
 /* Waits for the page to load to begin modification */
