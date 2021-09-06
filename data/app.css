@@ -189,9 +189,19 @@ body div div {
   overflow-y: auto;
 }
 
-body div div div {
+.seperator {
   background-color: var(--shadow);
+}
+
+.seperator div {
   height: 50px;
+}
+.seperator text {
+  margin-left: 10px;
+  line-height: 50px;
+  float: left;
+  font-size: 20px;
+  font-weight: bolder;
 }
 
 body div div div text {
@@ -199,7 +209,8 @@ body div div div text {
   line-height: 50px;
   float: left;
   font-size: 20px;
-  font-weight: bolder
+  font-weight: normal;
+  pointer-events: none;
 }
 
 body div div div input {
@@ -272,6 +283,6 @@ input:active {
   font-size: 10px;
 }
 
-#filter .filter:hover, #search .search:hover {
+#filters .filter:hover, #search .search:hover {
   background-color: var(--hoverHighlight);
 }

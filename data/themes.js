@@ -25,7 +25,7 @@ function getArrayAsRGB(inputArray)
   let result = 'rgb(0, 0, 0)';
   if(inputArray.length >= 3)
   {
-    result = `rgb(${inputArray[0]}, ${inputArray[1]}, ${inputArray[2]})`;
+    result = `rgb${inputArray.length>3?`a`:``}(${inputArray[0]}, ${inputArray[1]}, ${inputArray[2]}${inputArray.length>3?`, ${inputArray[3]}`:``})`;
   }
   return result;
 }
