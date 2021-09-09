@@ -5,6 +5,16 @@
 * USE: Handles creation of filters *
 ***********************************/
 
+/* Generates a UUID for a filter */
+function generateId()
+{
+  let res = '';
+  for(let x = 0; x < 30; x++) {
+    res += parseInt((Math.random() * 11) - 1);
+  }
+  return res;
+}
+
 /* Creates a new empty filter */
 function createFilter()
 {
@@ -32,6 +42,7 @@ function createFilterDiv(id)
     let divUl = $('<div>');
     divUl.append($('<text>').text('File Types'))
     divUl.append($('<input>').attr('type', 'text').attr('placeholder', 'File Type').attr('id', id + 'filetype'));
+    $('#' + id + 'filetype').on('keyup', eval(`(e) => { if(e.key === 'Enter' || e.keyCode === 13) addFileType(${id})}`));
     divUl.append($('<input>').attr('type', 'button').attr('value', 'Add File Type Filter').attr('onclick', 'addFileType(\'' + id + '\')'));
 
     let ul = $('<ul>').append($('<br>')).append($('<br>')).attr('id', id + 'list')
@@ -41,6 +52,9 @@ function createFilterDiv(id)
 
     divUl.append(ul);
     div.append(divUl);
+
+    div.append($('<input>').attr('type', 'button').attr('value', config.files.move[id].to).attr('id', id + 'to').attr('class', 'filterTo').attr('onclick', `requestFileMoveDialog('${id}')`));
+
     $('#filters').append(div);
   }
 }
@@ -69,7 +83,7 @@ function removeFileType(id, type)
     let remove = [];
     list.children().each((index) => {
       let n = $(list.children().get(index));
-      if(n.text().startsWith(type.toLowerCase())) {
+      if(n.text().toLowerCase() == type.toLowerCase()) {
         remove.push(n);
         if(config.files.move[id].types.length > 1)
         {
@@ -94,5 +108,6 @@ function addFileType(id)
     config.files.move[id].types.push(val.toLowerCase());
     saveConfig();
     $('#' + id + 'list').append($('<li>').text(val.toLowerCase()).append($('<input>').attr('type', 'button').attr('value', 'Remove File Type').attr('class', 'remove').attr('onclick', 'removeFileType(\'' + id + '\', \'' + val + '\')')));
+    $('#' + id + 'filetype').val('');
   }
 }

@@ -221,7 +221,7 @@ body div div div input {
   padding: 5px;
 }
 
-input {
+input, select {
   display: block;
   background-color: transparent;
   border-width: 2px;
@@ -231,17 +231,22 @@ input {
   padding: 5px;
 }
 
-input:hover {
+input:hover, select:hover {
   background-color: var(--hoverHighlight);
 }
 
-input:focus {
+input:focus, select:focus {
   outline: none;
 }
 
-input:active {
+input:active, select:active {
   outline: none;
   background-color: var(--highlight)
+}
+
+select option {
+  text: var(--text);
+  background-color: var(--background);
 }
 
 #filters .filter, #search .search {
@@ -283,6 +288,100 @@ input:active {
   font-size: 10px;
 }
 
+.setting {
+  height: 36px;
+}
+
+.setting div {
+  width: 50%;
+  height: 36px;
+  float: left;
+}
+
+.setting div text {
+  float: right;
+  margin-right: 10px;
+  font-size: 26px;
+  line-height: 36px;
+}
+
+.setting div select, .setting div input {
+  float: left;
+  margin-left: 10px;
+  margin-top: 3px;
+}
+
+.setting:hover {
+  background-color: var(--highlight);
+}
+
 #filters .filter:hover, #search .search:hover {
   background-color: var(--hoverHighlight);
+}
+
+#search .search input {
+  margin-top: 13px;
+}
+
+input[type='number'] {
+  padding: 2px;
+  -moz-appearance: textfield;
+  text-align: center;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  margin-left: 0;
+  margin-right: 0;
+  transform: translateX(-10px);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.incrementor, .decrementor {
+  padding: 2px;
+  width: 25px;
+  border-width: 0;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.incrementor {
+  color: var(--maximizeColor);
+  border-right-width: 2px;
+  transform: translateX(-20px);
+}
+
+.decrementor {
+  color: var(--closeColor);
+  border-left-width: 2px;
+}
+
+input[type=checkbox] {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  transform: translateY(3px);
+  background-color: var(--closeColor);
+}
+
+input[type=checkbox]:checked {
+  background-color: var(--maximizeColor);
+}
+
+.filterTo {
+  text-align: left;
+  float: left;
+  width: 50%;
+  line-height: 24px;
+  font-size: 20px;
+  margin-bottom: 4px;
+  margin-left: 10px;
 }

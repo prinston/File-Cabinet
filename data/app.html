@@ -6,7 +6,7 @@
   </head>
   <body>
     <ul id='navbar'>
-      <li id='title'>File Cabinet</li>
+      <li id='title'>//File Cabinet</li>
       <li id='close' onclick='window.close()'><img src='close.png'></img><b>Close</b></li>
       <li id='maximize'><img src='maximize.png'></img><b>Maximize</b></li>
       <li id='minimize' onclick='window.minimize()'><img src='minimize.png'></img><b>Minimize</b></li>
@@ -33,6 +33,22 @@
     <div type='group' id='log_tab' class='hide'>
     </div>
     <div type='group' id='settings_tab' class='hide'>
+      <div class='setting'>
+        <div><text>Theme</text></div>
+        <div><select id='themeSelect'></select></div>
+      </div>
+      <div class='setting'>
+        <div><text>Notify</text></div>
+        <div><input type='checkbox' value='true' id='notify'></input></div>
+      </div>
+      <div class='setting'>
+        <div><text>Auto-sort</text></div>
+        <div><input type='checkbox' value='true' id='autosort'></input></div>
+      </div>
+      <div class='setting'>
+        <div><text>Auto-sort Time (Minutes)</text></div>
+        <div><input type='number' min='1' max='240' value='60' step='1' id='autosorttime'></input></div>
+      </div>
     </div>
   </body>
 </html>

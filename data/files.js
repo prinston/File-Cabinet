@@ -35,8 +35,10 @@ function requestFileMoveDialog(id)
   });
 
   if(res != undefined) {
-    if(config.files.move[i] != undefined) {
-      config.files.move[i].to = res[0];
+    if(config.files.move[id] != undefined) {
+      $('#' + id + 'to').attr('value', res[0]);
+      config.files.move[id].to = res[0];
+      saveConfig();
     }
   }
 }

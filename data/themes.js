@@ -25,7 +25,8 @@ function getArrayAsRGB(inputArray)
   let result = 'rgb(0, 0, 0)';
   if(inputArray.length >= 3)
   {
-    result = `rgb${inputArray.length>3?`a`:``}(${inputArray[0]}, ${inputArray[1]}, ${inputArray[2]}${inputArray.length>3?`, ${inputArray[3]}`:``})`;
+    if(inputArray.length > 3) result = `rgba(${inputArray[0]}, ${inputArray[1]}, ${inputArray[2]}, ${inputArray[3]})`;
+    else result = `rgb(${inputArray[0]}, ${inputArray[1]}, ${inputArray[2]})`;
   }
   return result;
 }
@@ -33,7 +34,8 @@ function getArrayAsRGB(inputArray)
 /* Convert a RGB variable to an INT array */
 function convertRGBToArray(variable)
 {
-  variable = variable.toLowerCase().replace('rgb(', '').replace(')', '');
+  if(variable.toLowerCase().startsWith('rgb(')) variable = variable.toLowerCase().replace('rgb(', '').replace(')', '');
+  else if(variable.toLowerCase().startsWith('rgba(')) variable = variable.toLowerCase().replace('rgba(', '').replace(')', '');
   while(variable.includes(' '))
   {
     variable = variable.replace(' ', '');
@@ -41,7 +43,8 @@ function convertRGBToArray(variable)
   variable = variable.split(',');
   for(let y in variable)
   {
-    variable[y] = parseInt(variable[y]);
+    if(y >= 3) variable[y] = parseFloat(variable[y]);
+    else variable[y] = parseInt(variable[y]);
   }
   return variable;
 }
@@ -62,11 +65,39 @@ function interpolate(a, b)
   return a;
 }
 
+/* Interpolate between two variables to bring variable A to variable B's value */
+function interpolateFloat(a, b)
+{
+  if(a < b)
+  {
+    a += (INTERPOLATION_AMOUNT*0.01);
+    if(a > b) a = b;
+  }
+  else if(a > b)
+  {
+    a -= (INTERPOLATION_AMOUNT*0.01);
+    if(a < b) a = b;
+  }
+  return a;
+}
+
 /* An interval to ensure colors are updated smoothly */
 on('document:ready', function()
 {
+  //if(themes[config.settings.theme] == undefined) config.settings.theme = Object.keys(themes)[0];
+  for(let theme in themes)
+  {
+    $('#themeSelect').append($('<option>').attr('value', theme).text(theme));
+  }
+  $('#themeSelect').val(config.settings.theme);
   setInterval(function()
   {
+    let temp = config.settings.theme;
+    if(temp.toLowerCase() != $('#themeSelect').val().toLowerCase())
+    {
+      config.settings.theme = $('#themeSelect').val().toLowerCase();
+      saveConfig();
+    }
     if(themes[config.settings.theme] != undefined)
     {
       for(let x in themes[config.settings.theme])
@@ -76,9 +107,19 @@ on('document:ready', function()
         let rgb = themes[config.settings.theme][x];
         let update = false;
         let interpolation = [interpolate(v[0], rgb[0]), interpolate(v[1], rgb[1]), interpolate(v[2], rgb[2])];
-        if(interpolation != v);
+        if(v.length > 3 && rgb.length > 3) interpolation.push(interpolateFloat(v[3], rgb[3]));
+        else if(rgb.length > 3) interpolation.push(rgb[3]);
+
+        for(var y in v)
         {
-          setVariable(x, getArrayAsRGB(interpolation));
+          if(interpolation.length > y)
+          {
+            if(interpolation[y] != v[y])
+            { 
+              setVariable(x, getArrayAsRGB(interpolation));
+              break;
+            }
+          }
         }
       }
     }

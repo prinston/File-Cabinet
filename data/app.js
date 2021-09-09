@@ -22,47 +22,11 @@ function loadScript(relativePath)
   vm.runInThisContext(fs.readFileSync(path.normalize(__dirname + '/' + relativePath)).toString());
 }
 
-loadScript('event.js');
-loadScript('themes.js');
-loadScript('files.js');
-loadScript('search.js');
-loadScript('filters.js');
-
-/* Generates a UUID for a filter */
-function generateId()
-{
-  let res = '';
-  for(let x = 0; x < 30; x++) {
-    res += parseInt((Math.random() * 11) - 1);
-  }
-  return res;
-}
-
 /* Saves the config */
 function saveConfig()
 {
+  ipcRenderer.send('config', config);
   fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
-}
-
-/* Loads the config */
-var config;
-if(fs.existsSync(CONFIG_PATH))
-{
-  let data = fs.readFileSync(CONFIG_PATH).toString();
-  config = JSON.parse(data);
-  for(var x in DEFAULT_CONFIG)
-  {
-    if(config[x] == undefined)
-    {
-      config[x] = DEFAULT_CONFIG;
-    }
-  }
-  saveConfig();
-}
-else
-{
-  config = DEFAULT_CONFIG;
-  saveConfig();
 }
 
 /* Loads the themes folder */
@@ -88,6 +52,27 @@ else
       fs.writeFileSync(path.normalize(THEME_PATH + '\\' + t + '.json'), JSON.stringify(DEFAULT_THEMES[t], null, 2));
     }
   });
+}
+
+/* Loads the config */
+var config;
+if(fs.existsSync(CONFIG_PATH))
+{
+  let data = fs.readFileSync(CONFIG_PATH).toString();
+  config = JSON.parse(data);
+  for(var x in DEFAULT_CONFIG)
+  {
+    if(config[x] == undefined)
+    {
+      config[x] = DEFAULT_CONFIG;
+    }
+  }
+  saveConfig();
+}
+else
+{
+  config = DEFAULT_CONFIG;
+  saveConfig();
 }
 
 /* Set a CSS variable */
@@ -120,9 +105,30 @@ function setActive(tab)
   emit('update:tab');
 }
 
+/* Listen for config changes */
+ipcRenderer.on('config', function(evnt, arg)
+{
+  document.querySelector('#notify').checked = arg.settings.notify;
+  document.querySelector('#autosort').checked = arg.settings.doAutoSort;
+  config = arg;
+});
+
 /* Gets the page properly setup for runtime (for custom title bar) */
 function setupDocument()
 {
+  loadScript('event.js');
+  loadScript('themes.js');
+  loadScript('files.js');
+  loadScript('search.js');
+  loadScript('filters.js');
+
+  let nInputs = $('input[type=number]')
+  nInputs.each(function(index)
+  {
+    let node = $(nInputs.get(index));
+    $('<input>').attr('type', 'button').attr('value', '+').attr('class', 'incrementor').attr('onclick', `this.previousElementSibling.stepUp()`).insertAfter(node);
+    $('<input>').attr('type', 'button').attr('value', '-').attr('class', 'decrementor').attr('onclick', `this.nextElementSibling.stepDown()`).insertBefore(node);
+  });
   for(let x in config.files.search) {
     createSearchDiv(x);
   }
@@ -153,8 +159,26 @@ function setupDocument()
     }
   });
 
+  document.querySelector('#autosort').checked = config.settings.doAutoSort;
+  document.querySelector('#notify').checked = config.settings.notify;
+  $('#autosorttime').val(config.settings.autoSort);
   setInterval(function()
   {
+    //Auto save settings
+    if(config.settings.doAutoSort != document.querySelector('#autosort').checked) {
+      config.settings.doAutoSort = document.querySelector('#autosort').checked;
+      saveConfig();
+    }
+    if(config.settings.notify != document.querySelector('#notify').checked) {
+      config.settings.notify = document.querySelector('#notify').checked;
+      saveConfig();
+    }
+    if(config.settings.autoSort != $('#autosorttime').val()) {
+      config.settings.autoSort = parseInt($('#autosorttime').val());
+      saveConfig();
+    }
+
+    //Handle maximize changes
     if(window.isMaximized())
     {
       $('#maximize img').attr('src', 'unmaximize.png');
